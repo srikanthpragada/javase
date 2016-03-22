@@ -1,0 +1,30 @@
+import java.io.IOException;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
+
+public class PrintJavaSourceCode {
+
+	public static void main(String[] args) throws Exception {
+		Path folder = Paths.get("c:\\jdk8\\aug4");
+		Files.walk(folder)
+		   .filter(p -> p.toString().endsWith(".java"))
+		   .forEach(PrintFileTree::printFile);
+
+	}
+
+	public static void printFile(Path p) {
+		try {
+			System.out.println("\nFile : " + p.toString());
+			System.out.println("=================================\n");
+			
+			Files.lines(p).forEach(System.out::println);
+		} catch (Exception ex) {
+
+		}
+	}
+
+}
