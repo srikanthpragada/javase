@@ -1,0 +1,79 @@
+
+class TestDoctor {
+
+	public static void print(Doctor d) {
+		d.print();
+		int amount = d.getPayment();
+		if (amount < 20000)
+			System.out.printf("Pay %d by cash\n", amount);
+		else
+			System.out.printf("Pay %d by cheque\n", amount);
+	}
+
+	public static void main(String[] args) {
+		Doctor d = new RDoctor("Dr. Bean", "Ped", 300000); // upcasting
+		print(d);
+		Consultant c = new Consultant("Dr. James", "Ped", 10, 400); // upcasting
+		print(c);
+	}
+}
+
+abstract class Doctor {
+	protected String name, dept;
+
+	public Doctor(String name, String dept) {
+		this.name = name;
+		this.dept = dept;
+	}
+
+	public abstract int getPayment();
+
+	public void print() {
+		System.out.println(name);
+		System.out.println(dept);
+	}
+}
+
+class RDoctor extends Doctor {
+	protected int salary;
+
+	public RDoctor(String name, String dept, int salary) {
+		super(name, dept);
+		this.salary = salary;
+	}
+
+	@Override
+	public void print() {
+		super.print();
+		System.out.println(salary);
+	}
+
+	@Override
+	public int getPayment() {
+		return salary;
+	}
+
+}
+
+class Consultant extends Doctor {
+	protected int visits, charge;
+
+	public Consultant(String name, String dept, int visits, int charge) {
+		super(name, dept);
+		this.visits = visits;
+		this.charge = charge;
+	}
+
+	@Override
+	public void print() {
+		super.print();
+		System.out.println(visits);
+		System.out.println(charge);
+	}
+
+	@Override
+	public int getPayment() {
+		return charge * visits;
+	}
+
+}
