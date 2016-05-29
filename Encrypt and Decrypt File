@@ -1,0 +1,184 @@
+// Program to encrypt and decrypt select file
+// Date : 29-May-2016
+
+package swing;
+
+import java.awt.Container;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class EncDecFrame extends JFrame {
+
+	JTextField tfSource, tfTarget;
+	JButton btnExit, btnSourceBrowse, btnTargetBrowse, btnEncrypt, btnDecrypt;
+
+	public EncDecFrame() {
+		super("Encryption Utilties");
+
+		tfSource = new JTextField(30);
+		tfTarget = new JTextField(30);
+		
+		btnSourceBrowse = new JButton("Browse");
+		btnSourceBrowse.addActionListener( e -> takeSourceFile());
+		btnTargetBrowse = new JButton("Browse");
+		btnTargetBrowse.addActionListener( e -> takeTargetFile());
+		
+		btnEncrypt = new JButton("Encrypt");
+		btnEncrypt.addActionListener( e -> encrypt());
+		
+		btnDecrypt = new JButton("Decrypt");
+		btnDecrypt.addActionListener( e -> decrypt());
+		
+		btnExit = new JButton("Exit");
+		btnExit.addActionListener( e -> System.exit(0) );
+
+		// add components
+
+		GridBagConstraints gbc = new GridBagConstraints();
+		Container c = getContentPane();
+		c.setLayout(new GridBagLayout());
+
+		c.add(new JLabel("Source Filename "), gbc);
+
+		gbc.gridwidth = 2;
+		gbc.fill = GridBagConstraints.BOTH;
+		c.add(tfSource, gbc);
+
+		gbc.gridwidth = 1;
+		c.add(btnSourceBrowse, gbc);
+		
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		
+		c.add(new JLabel("Target Filename "), gbc);
+		
+		gbc.gridx = 1;
+		gbc.gridwidth = 2;
+		gbc.fill = GridBagConstraints.BOTH;
+		c.add(tfTarget, gbc);
+
+		gbc.gridwidth = 1;
+		gbc.gridx = 3;
+		c.add(btnTargetBrowse, gbc);
+		
+		
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.gridwidth = 4;
+		
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.add(btnEncrypt);
+		buttonPanel.add(btnDecrypt);
+		buttonPanel.add(btnExit);
+		
+		c.add(buttonPanel, gbc);
+		
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(600, 300);
+		
+
+	}
+	
+	public void takeSourceFile() {
+		JFileChooser jfc = new JFileChooser();
+		int result = jfc.showOpenDialog(this);
+		if ( result == JFileChooser.APPROVE_OPTION)
+			tfSource.setText(  jfc.getSelectedFile().toString());
+	}
+	
+	public void takeTargetFile() {
+		JFileChooser jfc = new JFileChooser();
+		int result = jfc.showSaveDialog(this);
+		if ( result == JFileChooser.APPROVE_OPTION)
+			tfTarget.setText(  jfc.getSelectedFile().toString());
+	}
+	
+	public boolean isValidateInput() {
+		
+		if ( tfSource.getText().trim().length() == 0)
+		{
+			JOptionPane.showMessageDialog(this, "Please select source file!", "Error", JOptionPane.ERROR_MESSAGE);
+            tfSource.requestFocus();			
+			return false;
+		}
+		
+		if ( tfTarget.getText().trim().length() == 0)
+		{
+			JOptionPane.showMessageDialog(this, "Please select target file!", "Error", JOptionPane.ERROR_MESSAGE);
+	        tfTarget.requestFocus();		
+			return false;
+		}
+		
+		return true; 
+	}
+	 
+	public void encrypt() {
+		
+		if (! isValidateInput())
+			return; 
+		
+		try {
+		     FileInputStream  source = new FileInputStream( tfSource.getText());
+		     FileOutputStream  target = new FileOutputStream( tfTarget.getText());
+		     
+		     int ch = source.read();
+		     
+		     while ( ch != -1) {
+		    	 target.write(ch + 1);
+		    	 ch = source.read(); 
+		     }
+		     target.close();
+		     source.close();
+				JOptionPane.showMessageDialog(this, "Encryption Completed!", "Status", JOptionPane.INFORMATION_MESSAGE);
+		}
+		catch(Exception ex) {
+			JOptionPane.showMessageDialog(this, "Sorry! Error : "  + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+	
+	public void decrypt() {
+		
+		if (! isValidateInput())
+			return; 
+		
+		try {
+		     FileInputStream  source = new FileInputStream( tfSource.getText());
+		     FileOutputStream  target = new FileOutputStream( tfTarget.getText());
+		     
+		     int ch = source.read();
+		     
+		     while ( ch != -1) {
+		    	 target.write(ch - 1);
+		    	 ch = source.read(); 
+		     }
+		     target.close();
+		     source.close();
+				JOptionPane.showMessageDialog(this, "Decryption Completed!", "Status", JOptionPane.INFORMATION_MESSAGE);
+		}
+		catch(Exception ex) {
+			JOptionPane.showMessageDialog(this, "Sorry! Error : "  + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+	}
+	
+	
+	public static void main(String[] args) {
+
+		EncDecFrame f = new EncDecFrame();
+		f.setVisible(true);
+
+	}
+
+}
