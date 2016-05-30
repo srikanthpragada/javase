@@ -12,7 +12,7 @@ public class PrintJavaSourceCode {
 		Path folder = Paths.get("c:\\jdk8\\aug4");
 		Files.walk(folder)
 		   .filter(p -> p.toString().endsWith(".java"))
-		   .forEach(PrintFileTree::printFile);
+		   .forEach(PrintJavaSourceCode::printFile);
 
 	}
 
