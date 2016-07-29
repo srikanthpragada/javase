@@ -1,0 +1,70 @@
+Person.java
+=============
+public class Person  implements Comparable<Person>{
+
+	private String name;
+	private int age;
+
+	@Override
+	public boolean equals(Object obj) {
+	    Person other = (Person) obj;
+		if (age != other.age)
+			return false;
+		
+		if (!name.equals(other.name))
+			return false;
+		
+		return true;
+	}
+	
+	@Override
+	public int hashCode() {
+		return 1;
+	}
+
+	public Person(String name, int age) {
+		this.name = name;
+		this.age = age;
+	}
+
+	@Override
+	public String toString() {
+		return "Person [name=" + name + ", age=" + age + "]";
+	}
+
+	
+	@Override
+	public int compareTo(Person other) {
+	    
+		System.out.println("compareTo");
+		// return this.age - other.age;
+		return   this.name.compareTo( other.name);
+	}
+}
+
+TestPerson.java
+==============
+
+import java.util.TreeSet;
+
+public class TestPerson {
+
+	public static void main(String[] args) {
+
+       TreeSet<Person> people = new TreeSet<>();
+       
+       people.add(new Person("Andy",40));
+       people.add(new Person("Scott",30));
+       people.add(new Person("Andy",40));
+       people.add(new Person("Tim",45));
+       people.add(new Person("Bob",25));
+       
+       
+       for(Person p : people)
+    	   System.out.println(p);
+       
+
+	}
+
+}
+
