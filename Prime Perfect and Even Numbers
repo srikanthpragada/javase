@@ -1,0 +1,110 @@
+import java.awt.Container;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+
+public class PrimeFrame extends JFrame {
+
+	private JTextField tfNumber;
+	private JButton btnPrime, btnPerfect, btnEven;
+	private JLabel lblMessage;
+
+	public PrimeFrame() {
+		super("Prime and Perfect Numbers");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		tfNumber = new JTextField(20);
+		btnPrime = new JButton("Prime?");
+		btnPerfect = new JButton("Perfect?");
+		btnEven = new JButton("Even?");
+		lblMessage = new JLabel();
+		lblMessage.setFont(new Font("Arial", Font.BOLD, 14));
+
+		btnPerfect.addActionListener(e -> prime());
+		btnPrime.addActionListener(e -> perfect());
+		btnEven.addActionListener(e -> {
+			int num = Integer.parseInt(tfNumber.getText());
+			if (num % 2 == 0)
+				lblMessage.setText("Even Number!");
+			else
+				lblMessage.setText("Odd Number!");
+		});
+
+		GridBagConstraints gbc = new GridBagConstraints();
+		Container c = getContentPane();
+		c.setLayout(new GridBagLayout());
+
+		gbc.insets = new Insets(5, 5, 5, 5);
+		c.add(new JLabel("Number :"), gbc);
+
+		gbc.gridwidth = 2;
+		c.add(tfNumber, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.gridwidth = 3;
+
+		JPanel p = new JPanel();
+		p.add(btnPrime);
+		p.add(btnPerfect);
+		p.add(btnEven);
+
+		c.add(p, gbc);
+
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.gridwidth = 3;
+		c.add(lblMessage, gbc);
+
+	}
+
+	public static void main(String[] args) {
+		PrimeFrame f = new PrimeFrame();
+		f.setSize(400, 200);
+		f.setVisible(true);
+	}
+
+	public void prime() {
+		try {
+			int num = Integer.parseInt(tfNumber.getText());
+			for (int i = 2; i <= num / 2; i++) {
+				if (num % i == 0) {
+					lblMessage.setText("Not a prime number!");
+					return;
+				}
+			}
+			lblMessage.setText("Prime number!");
+		} catch (Exception ex) {
+			tfNumber.grabFocus();
+			lblMessage.setText("Sorry! Invalid Number. Please try again!");
+		}
+	}
+
+	public void perfect() {
+		try {
+			int num = Integer.parseInt(tfNumber.getText());
+			int total = 1;
+			for (int i = 2; i <= num / 2; i++) {
+				if (num % i == 0) {
+					total += i;
+				}
+			}
+			if (num == total) {
+				lblMessage.setText("Perfect number!");
+			} else {
+				lblMessage.setText("Not a Perfect number!");
+			}
+		} catch (Exception ex) {
+			tfNumber.grabFocus();
+			lblMessage.setText("Sorry! Invalid Number. Please try again!");
+		}
+	}
+
+}
