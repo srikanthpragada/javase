@@ -1,0 +1,94 @@
+
+abstract class Employee {
+	protected String name, desg;
+
+	public Employee(String name, String desg) {
+		super();
+		this.name = name;
+		this.desg = desg;
+	}
+	
+	public void print() {
+		System.out.println(name);
+		System.out.println(desg);
+	}
+	
+	abstract public int getSalary(); 
+}
+
+class SalariedEmployee extends Employee {
+	protected int salary;
+
+	public SalariedEmployee(String name, String desg,int salary) {
+		super(name,desg);
+		this.salary = salary;
+	}
+	
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(salary);
+	}
+
+	@Override
+	public int getSalary() {
+		return salary;
+	}
+	
+
+}
+
+class Consultant extends Employee {
+	protected int hours, rate;
+
+	public Consultant(String name, String desg,int hours, int rate) {
+		super(name,desg);
+		this.hours = hours;
+		this.rate = rate; 
+	}
+	
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(hours);
+		System.out.println(rate);
+	}
+	
+	@Override 
+	public int getSalary() {
+		return hours * rate;
+	}
+}
+
+
+class TestEmployee
+{
+	
+	public static void main(String args[]) {
+		Employee e1 = new Employee("","");
+		
+		
+		Employee e  = new SalariedEmployee("Mr. Steve","Programmer",50000);
+		e.print(); // runtime polymorphism 
+		System.out.printf("Salary : %d\n",  e.getSalary());
+		
+		
+		e  = new Consultant("Mr. Rob","DBA",15,1000);
+		e.print(); // runtime polymorphism 
+		System.out.printf("Salary : %d\n",  e.getSalary());
+	}
+
+}	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
