@@ -1,0 +1,120 @@
+LambdaDemo.java
+===============
+
+
+public class LambdaDemo {
+
+	public static void main(String[] args) {
+		 Thread t = new Thread( () -> System.out.println("In Thread!"));
+		 t.start();
+		 Thread t2 = new Thread( () -> 
+		   {
+			   System.out.println("First");
+			   System.out.println("Second");
+		   }
+    	 );
+ 		t2.start();
+		Thread t3 = new Thread(LambdaDemo::print); // method reference 
+		t3.start();
+		
+	}
+	
+	public static void print() {
+		 for(int i = 1; i <= 10; i ++)
+			 System.out.println(i);
+	}
+
+}
+
+LambdaDemo2.java
+=================
+import java.util.ArrayList;
+import java.util.Collections;
+
+public class LambdaDemo2 {
+	public static void main(String[] args) {
+		ArrayList<String> names = new ArrayList<>();
+		names.add("Larry Ellison");
+		names.add("Steve");
+		names.add("Larry Page");
+		names.add("Bill Gates");
+		Collections.sort(names, 
+				(s1,s2) -> s1.length() - s2.length());
+
+		for(String n : names)
+			System.out.println(n);
+	}
+}
+
+Time.java
+=========
+
+public class Time implements Comparable<Time> {
+	private int h, m, s;
+	public Time(int h, int m, int s) { 
+		super();
+		this.h = h;
+		this.m = m;
+		this.s = s;
+	}
+	
+	public int getSeconds() {
+		return s;
+	}
+	
+	public int totalSeconds() {
+		return  h * 3600 + m * 60 + s;
+	}
+	public int hashCode(){
+		return 1;
+	}
+	@Override
+	public boolean equals(Object other) {
+		System.out.println("Equals");
+		Time t2 = (Time) other;
+		return  this.totalSeconds() == t2.totalSeconds();
+	}
+
+	@Override
+	public String toString() {
+		return "Time [h=" + h + ", m=" + m + ", s=" + s + "]";
+	}
+	@Override
+	//  0, 
+	public int compareTo(Time other) {
+	   return  this.totalSeconds() - other.totalSeconds();
+	}
+
+}
+
+LambdaDemo3.java
+===============
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
+public class LambdaDemo3 {
+	public static void main(String[] args) {
+		ArrayList<Time> times = new ArrayList<>();
+		times.add( new Time(10,20,30));
+		times.add( new Time(4,25,35));
+		times.add( new Time(20,10,10));
+
+		Collections.sort(times);
+		
+		for(Time t : times)
+			System.out.println(t);
+		
+		Collections.sort(times, 
+				(t1,t2) -> t1.getSeconds() - t2.getSeconds());
+
+		for(Time t : times)
+			System.out.println(t);
+	}
+}
+
+
+
+
+
+
