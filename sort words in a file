@@ -1,0 +1,28 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.TreeSet;
+
+public class SortWords {
+	public static void main(String[] args) throws Exception {
+		 Path p = Paths.get("f:\\classroom\\test.txt");
+			try {
+				TreeSet<String> words = new TreeSet<>();
+				Files.lines(p)
+				     .forEach(line -> processLine(line,words));
+				
+				for(String w : words)
+					System.out.println(w);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+	}
+	
+	public static void processLine(String line, TreeSet<String> words) {
+		 String wl[] = line.split("[;., ]+");
+		 for(String word : wl)
+			  words.add(word);
+	}
+}
