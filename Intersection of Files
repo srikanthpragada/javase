@@ -1,0 +1,28 @@
+package collections;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.LinkedHashSet;
+import java.util.List;
+
+public class Intersection {
+
+	public static void main(String[] args) throws Exception {
+
+		Path fp = Paths.get("f:\\classroom\\dec1_javase\\file1.txt");
+		Path sp = Paths.get("f:\\classroom\\dec1_javase\\file2.txt");
+
+		LinkedHashSet<String> comlines = new LinkedHashSet<>();
+
+		List<String> flist = Files.readAllLines(fp);
+		List<String> slist = Files.readAllLines(sp);
+
+		for (String line : flist)
+			if (slist.contains(line))
+				comlines.add(line);
+
+		for (String line : comlines)
+			System.out.println(line);
+	}
+}
