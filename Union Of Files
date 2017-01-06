@@ -1,0 +1,21 @@
+package collections;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.LinkedHashSet;
+
+public class Union {
+
+	public static void main(String[] args) throws Exception  {
+
+        Path fp = Paths.get("f:\\classroom\\dec1_javase\\file1.txt");
+        Path sp = Paths.get("f:\\classroom\\dec1_javase\\file2.txt");
+        
+        LinkedHashSet<String> ulines = new LinkedHashSet<>(Files.readAllLines(fp));
+        ulines.addAll(Files.readAllLines(sp));
+        
+        for(String line : ulines)
+        	System.out.println(line);
+	}
+}
