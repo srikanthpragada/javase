@@ -1,0 +1,51 @@
+package collections;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.LinkedHashSet;
+import java.util.TreeMap;
+import java.util.regex.Pattern;
+
+public class ListPhones {
+	public static void main(String[] args) throws Exception {
+		TreeMap<String, LinkedHashSet<String>> phones = new TreeMap<>();
+		FileReader fr = new FileReader("f:\\classroom\\dec1_javase\\phones.txt");
+		BufferedReader br  = new BufferedReader(fr);
+		while(true)
+		{
+			 String line = br.readLine();
+			 if ( line == null)
+				  break;
+			 String parts[] = line.split("[:,-]+");
+			 
+			 if ( parts.length < 2)
+				  continue;
+			 
+			 // validate phone number
+			 if (! Pattern.matches("^\\d{10}$", parts[1]))
+				   continue;
+			 
+			 if (phones.containsKey(parts[0]))
+			 {
+				 LinkedHashSet<String> numbers = phones.get(parts[0]);
+				 numbers.add(parts[1]);
+			 }
+			 else
+			 {
+				 LinkedHashSet<String> numbers = new LinkedHashSet<>();
+				 numbers.add(parts[1]);
+				 phones.put( parts[0], numbers );
+			 }
+		}
+		
+		for(String name : phones.keySet())
+		{
+			System.out.println(name);
+			for(String phone : phones.get(name))
+			{
+				System.out.println(phone);
+			}
+		}
+		
+	}
+}
