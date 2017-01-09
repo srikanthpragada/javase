@@ -1,0 +1,25 @@
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class PrintAverageLines {
+
+	public static void main(String[] args) throws Exception {
+		Path folder = Paths.get("f:\\classroom\\dec1");
+		double avg = Files.walk(folder)
+				.filter(p -> p.toString().endsWith(".java"))
+				.mapToInt(PrintAverageLines::getLinesCount)
+				.average()
+				.getAsDouble();
+		System.out.println(avg);
+	}
+
+	public static int getLinesCount(Path p) {
+		try {
+			return Files.readAllLines(p).size();
+		} catch (Exception ex) {
+			return 0;
+		}
+	}
+
+}
