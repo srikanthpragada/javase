@@ -1,0 +1,56 @@
+Product.java
+==============
+public class Product {
+	 private String name;
+	 private double price;
+	 private String [] features = new String[3];
+	 private static double taxRate = 12.5;
+	 
+	 public Product (String name, double price, String f1, String f2, String f3)
+	 {
+		 this.name = name;
+		 this.price = price;
+		 this.features[0] = f1;
+		 this.features[1] = f2;
+		 this.features[2] = f3;
+	 }
+	 
+	 public void print() {
+		 System.out.println(name);
+		 System.out.println(price);
+		 
+		 for(String s : features)
+			 System.out.println(s);
+	 }
+	 
+	 public double getNetPrice() {
+		 return price + (price * taxRate / 100); 
+	 }
+	 
+	 public static double getTaxRate() {
+		 return taxRate;
+	 }
+	 
+	 public static void setTaxRate(double taxRate) {
+		   Product.taxRate = taxRate;
+	 }
+}
+
+
+TestProduct.java
+=================
+
+public class TestProduct {
+
+	public static void main(String[] args) {
+
+      Product p = new Product ("iPhone 7",70000,"3D Touch","Water Resistent", "Earpods");
+      p.print();
+      System.out.println(p.getNetPrice());
+      Product.setTaxRate(15);
+      System.out.println(p.getNetPrice());
+      
+	}
+
+}
+
