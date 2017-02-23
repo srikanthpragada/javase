@@ -1,0 +1,53 @@
+package io;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.LineNumberReader;
+
+public class ListMobileNumbers {
+	
+	public static boolean isValidMobileNumber(String input)
+	{
+		int len = input.length();
+		
+		if (len != 10)
+			return false; 
+		
+		for(int i = 0; i < 10; i ++) {
+			if ( ! Character.isDigit(input.charAt(i)))
+					return false;
+		}
+		
+	    return true;		
+	}
+
+	public static void main(String[] args) {
+
+        try {
+			FileReader fr = new FileReader("f:\\classroom\\jan20\\mobile.txt");
+			LineNumberReader lnr = new LineNumberReader(fr);
+			String line;
+			
+			while (true)
+			{
+				line = lnr.readLine();
+				if ( line == null)
+					 break;
+				
+				int len = line.trim().length();
+				
+				if (len == 0)
+					continue; 
+				
+				if (!isValidMobileNumber(line))
+					System.out.printf("%3d:%s\n", lnr.getLineNumber(),line);
+			}
+			
+			fr.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}
