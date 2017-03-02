@@ -1,0 +1,62 @@
+package col;
+
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.LinkedHashSet;
+
+public class Minus {
+
+	public static void main(String[] args) throws Exception {
+	 
+		LinkedHashSet<String> numbers = new LinkedHashSet<String>();
+		LinkedHashSet<String> errors = new LinkedHashSet<String>();
+		
+		BufferedReader brnumbers = Files.newBufferedReader( Paths.get("f:\\classroom\\jan20\\allnumbers.txt"));
+		BufferedReader brerrors = Files.newBufferedReader( Paths.get("f:\\classroom\\jan20\\errornumbers.txt"));
+		
+		while(true) {
+			String line = brnumbers.readLine();
+			if ( line == null ) break;
+			numbers.add(line);
+		}
+		
+		brnumbers.close();
+		
+		while(true) {
+			String line = brerrors.readLine();
+			if ( line == null ) break;
+			errors.add(line);
+		}
+		
+		brerrors.close();
+		
+		// remove error numbers from all numbers
+		numbers.removeAll(errors);
+		
+		
+		// write back all numbers to allnumbers.txt
+		
+		FileWriter fw  = new FileWriter("f:\\classroom\\jan20\\allnumbers.txt");
+		for(String number : numbers)
+			fw.write(number + "\n");
+		
+		fw.close();
+
+	}
+
+}
+
+allnumbers.txt
+==============
+939393933
+343434333
+123213232
+223232323
+232321111
+
+errornumbers.txt
+=================
+343434333
+223232323
