@@ -1,0 +1,31 @@
+package col;
+
+import java.io.BufferedReader;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
+public class SortedWords {
+	public static void main(String[] args) throws Exception {
+       Path p = Paths.get("f:\\classroom\\test.txt");
+       BufferedReader br = Files.newBufferedReader(p);
+       
+       ArrayList<String> sortedWords = new ArrayList<>();
+       while(true) 
+       {
+    	   String line = br.readLine();
+    	   if (line == null)
+    		    break;
+    	   
+    	   String words[] = line.split("[ ;,\\.]+");
+    	   for(String w : words)
+    		   sortedWords.add(w);
+       }
+       
+       br.close();
+       
+       for(String w : sortedWords)
+    	   System.out.println(w);
+	}
+}
