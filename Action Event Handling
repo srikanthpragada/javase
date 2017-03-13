@@ -1,0 +1,176 @@
+TodayFrame.java
+===============
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class TodayFrame extends JFrame {
+	JLabel lbl;
+	JButton btnShow, btnHide;
+
+	public TodayFrame() {
+		super("Today");
+		lbl = new JLabel();
+		btnShow = new JButton("Show");
+		btnHide = new JButton("Hide");
+
+		JPanel p = new JPanel();
+		p.add(btnShow);
+		p.add(btnHide);
+		
+
+		lbl.setText(LocalDateTime.now().toString());
+		lbl.setHorizontalAlignment(JLabel.CENTER);
+		
+		Container c = getContentPane();
+		c.add(lbl, BorderLayout.PAGE_START);
+		c.add(p, BorderLayout.PAGE_END);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// event handling 
+		btnShow.addActionListener( new ShowListener());
+		btnHide.addActionListener( new HideListener());
+	}
+	
+	class ShowListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			lbl.setText(LocalDateTime.now().toString());
+		}
+	}
+	
+	class HideListener implements ActionListener
+	{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			lbl.setText("");
+		}
+	}
+	
+
+	public static void main(String[] args) {
+		TodayFrame f = new TodayFrame();
+		f.setSize(300, 200);
+		f.setVisible(true);
+
+	}
+}
+
+TodayFrame2.java
+==================
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class TodayFrame2 extends JFrame {
+	JLabel lbl;
+	JButton btnShow, btnHide;
+
+	public TodayFrame2() {
+		super("Today");
+		lbl = new JLabel();
+		btnShow = new JButton("Show");
+		btnHide = new JButton("Hide");
+
+		JPanel p = new JPanel();
+		p.add(btnShow);
+		p.add(btnHide);
+
+		lbl.setText(LocalDateTime.now().toString());
+		lbl.setHorizontalAlignment(JLabel.CENTER);
+
+		Container c = getContentPane();
+		c.add(lbl, BorderLayout.PAGE_START);
+		c.add(p, BorderLayout.PAGE_END);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		// event handling
+		btnShow.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				lbl.setText(LocalDateTime.now().toString());
+			}
+		});
+
+		btnHide.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				lbl.setText("");
+			}
+		});
+	}
+
+	public static void main(String[] args) {
+		TodayFrame2 f = new TodayFrame2();
+		f.setSize(300, 200);
+		f.setVisible(true);
+
+	}
+
+}
+
+TodayFrame3.java
+==================
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+public class TodayFrame3 extends JFrame {
+	JLabel lbl;
+	JButton btnShow, btnHide;
+
+	public TodayFrame3() {
+		super("Today");
+		lbl = new JLabel();
+		btnShow = new JButton("Show");
+		btnHide = new JButton("Hide");
+
+		JPanel p = new JPanel();
+		p.add(btnShow);
+		p.add(btnHide);
+
+		lbl.setText(LocalDateTime.now().toString());
+		lbl.setHorizontalAlignment(JLabel.CENTER);
+
+		Container c = getContentPane();
+		c.add(lbl, BorderLayout.PAGE_START);
+		c.add(p, BorderLayout.PAGE_END);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		// event handling
+		btnShow.addActionListener( e ->	lbl.setText(LocalDateTime.now().toString()));
+		btnHide.addActionListener( e -> lbl.setText(""));
+
+	}
+
+	public static void main(String[] args) {
+		TodayFrame3 f = new TodayFrame3();
+		f.setSize(300, 200);
+		f.setVisible(true);
+
+	}
+
+}
+
