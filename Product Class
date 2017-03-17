@@ -1,0 +1,62 @@
+Product.java
+=============
+public class Product {
+	// instance variables 
+	private String name;
+	private double price;
+	
+    // class variable 
+	private static double taxRate = 0.17;
+	
+	public static void setTaxRate(double rate) {
+		  taxRate = rate;
+	}
+	
+	
+	// Constructor
+	public Product(String name, double price)
+	{
+		this.name  = name;
+		this.price = price;
+	}
+	public Product(String name)
+	{
+		this.name  = name;
+	}
+
+	// methods
+	public void print()
+	{
+		System.out.println(name);
+		System.out.println(price);
+	}
+	
+	public double getNetPrice() {
+		return this.price +  this.price * taxRate;
+	}
+
+	public void setPrice(double price) {
+		this.price = price; 
+	}
+}
+
+TestProduct.java
+================
+
+public class TestProduct {
+
+	public static void main(String[] args) {
+		Product.setTaxRate(0.12);
+		
+  	Product p; // object reference
+		p = new Product("iPhone 7 plus",70000);
+		p.setPrice(1111);
+  	p.print();
+		
+		Product p2 = new Product("External HDD 1TB");
+		p2.setPrice(4500); 
+		System.out.println(p2.getNetPrice());
+	}
+
+}
+
