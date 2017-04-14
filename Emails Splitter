@@ -6,8 +6,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,36 +22,55 @@ public class EmailSplitter extends JFrame {
 
 	private JTextField tfSourceFilename, tfTargetFilename;
 	private JTextArea taEmails;
-	private JButton btnSplit, btnSave;
+	private JButton btnSplit, btnSave, btnBrowse, btnSaveBrowse;
 
 	public EmailSplitter() {
 		super("Email Splitter 1.0");
-		tfSourceFilename = new JTextField("f:\\classroom\\email.txt",20);
-		
+		tfSourceFilename = new JTextField("f:\\classroom\\email.txt", 20);
+
 		taEmails = new JTextArea();
 
 		JScrollPane sp = new JScrollPane(taEmails, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		btnSplit = new JButton("Split");
-		btnSplit.addActionListener( evt -> splitEmails());
+		btnSplit.addActionListener(evt -> splitEmails());
+		btnBrowse = new JButton("...");
+		btnBrowse.addActionListener(e -> {
+			JFileChooser jfc = new JFileChooser();
+			int status = jfc.showOpenDialog(this);
+			if (status == JFileChooser.APPROVE_OPTION) {
+				tfSourceFilename.setText(jfc.getSelectedFile().getAbsolutePath());
+			}
+		} // Lambda block
+		);
 
 		btnSave = new JButton("Save");
-		btnSave.addActionListener( evt -> saveEmails());
+		btnSave.addActionListener(evt -> saveEmails());
 		tfTargetFilename = new JTextField(20);
+		btnSaveBrowse = new JButton("...");
+		btnSaveBrowse.addActionListener(e -> {
+			JFileChooser jfc = new JFileChooser();
+			int status = jfc.showSaveDialog(this);
+			if (status == JFileChooser.APPROVE_OPTION) {
+				tfTargetFilename.setText(jfc.getSelectedFile().getAbsolutePath());
+			}
+		} // Lambda block
+		);
 
 		// Top Panel
 		JPanel tp = new JPanel();
 		tp.add(new JLabel("Filename :"));
 		tp.add(tfSourceFilename);
+		tp.add(btnBrowse);
 		tp.add(btnSplit);
 
 		//
 		JPanel bp = new JPanel();
 		bp.add(new JLabel("Target :"));
 		bp.add(tfTargetFilename);
+		bp.add(btnSaveBrowse);
 		bp.add(btnSave);
-		
 
 		Container c = getContentPane();
 		c.add(tp, BorderLayout.PAGE_START);
@@ -58,36 +79,35 @@ public class EmailSplitter extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 	}
-	
-	public void saveEmails()
-	{
-		try(FileWriter fw = new FileWriter( tfTargetFilename.getText())) {
-		 fw.write( taEmails.getText());
-		 JOptionPane.showMessageDialog(this, "Completed Successfully","Status", JOptionPane.INFORMATION_MESSAGE);
-		}
-		catch(Exception ex) {
-			 JOptionPane.showMessageDialog(this, ex.getMessage() ,"Error", JOptionPane.ERROR_MESSAGE);
+
+	public void saveEmails() {
+		try (FileWriter fw = new FileWriter(tfTargetFilename.getText())) {
+			fw.write(taEmails.getText());
+			JOptionPane.showMessageDialog(this, "Completed Successfully", "Status", JOptionPane.INFORMATION_MESSAGE);
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-
 
 	public void splitEmails() {
 		try {
 			Path file = Paths.get(tfSourceFilename.getText());
 			TreeSet<String> emails = new TreeSet<>();
-			Files.lines(file).forEach( line -> {
-				 String [] parts = line.split(",");
-				 for (String part : parts)
-					 emails.add(part);
+			Files.lines(file).forEach(line -> {
+				String[] parts = line.split(",");
+				for (String part : parts)
+					emails.add(part);
 			});
 			// display emails in text area
 			taEmails.setText("");
-			
-			for(String email : emails)
-				taEmails.append(email + "\n");
-			
-		} catch (Exception ex) {
 
+			for (String email : emails) {
+				if (Pattern.matches(".+@.+", email))
+					taEmails.append(email + "\n");
+			}
+
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
