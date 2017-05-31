@@ -1,0 +1,39 @@
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class PrimeTestWithPool {
+
+	static class PrimeTask implements Runnable {
+		int num;
+		public PrimeTask(int num) {
+			this.num = num;
+		}
+		public void run() {
+			for (int i = 2; i < num / 2; i++) {
+				try {
+					Thread.sleep(1);
+				} catch (Exception ex) {
+
+				}
+				if (num % i == 0) {
+					System.out.printf("%d is not prime\n", num);
+					return;
+				}
+			} // for
+			System.out.printf("%d is prime\n", num);
+		}
+	}
+
+	public static void main(String[] args) {
+		int a[] = { 292221929, 383833383, 383383831, 997,939393,3939393, 33433333 };
+
+		ExecutorService pool = Executors.newFixedThreadPool(3);
+		
+		for (int n : a) {
+			PrimeTask task = new PrimeTask(n);
+			pool.execute(task);
+		}
+
+	}
+
+}
