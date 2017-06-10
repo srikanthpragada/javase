@@ -1,0 +1,92 @@
+public class TestDoctor {
+
+	public static void main(String[] args) {
+		RDoctor r = new RDoctor("Dr. Bean", "Ped", 200000);
+		Consultant c = new Consultant("Dr. Joe","Card",10,1000);
+		
+		print(r);
+		print(c);
+	}
+	
+	public static void print(Doctor d) 
+	{
+		d.print(); // Runtime polymorphism
+		System.out.println(d.getPay()); // Runtime polymorphism
+	}
+}
+
+abstract class Doctor 
+{
+	protected String name, dept;
+	public Doctor(String name, String dept) {
+		this.name = name;
+		this.dept = dept;
+	}
+	
+	public abstract int getPay();
+
+	public void print() {
+		System.out.println(name);
+		System.out.println(dept);
+	}
+}
+
+
+class RDoctor extends Doctor  
+{
+	protected int salary;
+	public RDoctor(String name, String dept, int salary) {
+		super(name,dept);
+		this.salary = salary;
+	}
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(salary);
+	}
+	
+	public int getPay()	{
+		return salary;
+	}
+}
+
+class Consultant extends Doctor  
+{
+	protected int visits,charge;
+	public Consultant(String name, String dept, int visits, int charge) {
+		super(name,dept);
+		this.visits = visits;
+		this.charge = charge;
+		
+	}
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(visits);
+		System.out.println(charge);
+	}
+	
+	public int getPay()	{
+		return visits * charge;
+	}
+}
+
+class Surgeon  extends Consultant  
+{
+	protected int samount;
+	public Surgeon(String name, String dept, int visits, int charge, int samount) {
+		super(name,dept,visits,charge);
+		this.samount = samount;
+	}
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(samount);
+	}
+	@Override 
+	public int getPay()	{
+		return  super.getPay() + samount;
+	}
+}
+
+
