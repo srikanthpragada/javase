@@ -1,0 +1,93 @@
+Product.java
+=============
+public class Product implements Comparable<Product> {
+	private String name;
+	private double price;
+	
+	@Override 
+	public int hashCode() {
+		return 1;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		
+		Product other = (Product) obj;
+		if (name.equals(other.name) && price == other.price)
+			return true;
+		else
+  		    return false;
+	}
+
+	public Product(String name, double price) {
+		super();
+		this.name = name;
+		this.price = price;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	@Override
+	public String toString() {
+		return "Product [name=" + name + ", price=" + price + "]";
+	}
+
+	@Override
+	public int compareTo(Product other) {
+          return  (int) (this.price - other.price);
+    }
+}
+
+ListProducts.java
+=================
+import java.util.Comparator;
+import java.util.TreeSet;
+
+class NameCompare implements Comparator<Product> 
+{
+	@Override
+	public int compare(Product p1, Product p2) {
+        return  p1.getName().compareTo(p2.getName());
+	}
+}
+
+public class ListProducts {
+
+	public static void main(String[] args) {
+       TreeSet<Product> list = new TreeSet<>(); 
+
+       list.add(new Product("Product1",10000));
+       list.add(new Product("Product2",20000));
+       list.add(new Product("Product4",5000));
+       list.add(new Product("Product3",30000));
+       
+       for(Product p : list)
+       {
+    	   System.out.println(p);
+       }
+       
+       TreeSet<Product> list2 = new TreeSet<>(new NameCompare()); 
+       list2.add(new Product("Prod3",10000));
+       list2.add(new Product("P2",20000));
+       list2.add(new Product("Product 4",5000));
+       list2.add(new Product("Pr1",30000));
+       
+       for(Product p : list2)
+       {
+    	   System.out.println(p);
+       }
+	}
+}
+
