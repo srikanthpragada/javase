@@ -1,0 +1,115 @@
+Version 1 (Inner class)
+========================
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class SortNames {
+
+	public static void main(String[] args) {
+
+		class LengthCompare implements Comparator<String> {
+			@Override
+			public int compare(String s1, String s2) {
+				return s1.length() - s2.length();
+			}
+		}
+
+		ArrayList<String> names = new ArrayList<>();
+		names.add("Bill");
+		names.add("Li");
+		names.add("Mark");
+		names.add("Joe");
+		names.add("Larry");
+
+		names.sort(new LengthCompare());
+
+		for (String n : names)
+			System.out.println(n);
+
+	}
+
+}
+
+
+Version 2 (Anonymous Inner class)
+=================================
+package col;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+
+public class SortNames {
+
+	public static void main(String[] args) {
+
+		ArrayList<String> names = new ArrayList<>();
+		names.add("Bill");
+		names.add("Li");
+		names.add("Mark");
+		names.add("Joe");
+		names.add("Larry");
+
+		names.sort( new Comparator<String>() {
+			public int compare(String s1, String s2) {
+				return s1.length() - s2.length();
+			}
+		  }
+		);
+
+		for (String n : names)
+			System.out.println(n);
+		
+		
+		Thread t = new Thread( new Runnable() {
+			  public void run() {
+				  System.out.println("In Thread!");
+			  }
+		});
+		
+		t.start(); 
+		
+
+	}
+
+}
+
+
+Version 3  (Lambda)
+====================
+
+package col;
+
+import java.util.ArrayList;
+
+public class SortNames {
+	
+	public static void print() {
+		for (int i = 1; i <= 10; i++)
+			System.out.println(i);
+	}
+
+	public static void main(String[] args) {
+
+		ArrayList<String> names = new ArrayList<>();
+		names.add("Bill");
+		names.add("Li");
+		names.add("Mark");
+		names.add("Joe");
+		names.add("Larry");
+
+		names.sort((s1, s2) -> s1.length() - s2.length());
+
+		for (String n : names)
+			System.out.println(n);
+
+		// Thread t = new Thread(() -> print() );
+		Thread t = new Thread( SortNames::print);  // Method reference 
+		t.start();
+
+	}
+
+}
+
+
+
+
