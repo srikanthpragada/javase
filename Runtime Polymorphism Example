@@ -1,0 +1,115 @@
+Employee.java
+=============
+public abstract class Employee {
+	 protected String name, desg;
+	 
+	 public Employee(String name, String desg) {
+		 this.name = name;
+		 this.desg = desg;
+	 }
+	 
+	 public void print() {
+		 System.out.println(name);
+		 System.out.println(desg);
+	 }
+	 
+	 public void setDesg(String desg) {
+		 this.desg = desg; 
+	 }
+	 
+	 public abstract int getSalary();
+}
+
+
+Consultant.java
+===============
+public class Consultant extends  Employee {
+ 	protected int hours, rate;
+	public Consultant(String name, String desg,int hours, int rate) {
+		super(name, desg);
+		 this.hours = hours;
+		 this.rate = rate; 
+	}
+	
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(hours);
+		System.out.println(rate);
+	}
+	
+	public int getSalary() {
+		return hours * rate; 
+	}
+
+}
+
+
+SalariedEmployee.java
+=====================
+public class SalariedEmployee extends  Employee {
+	protected int salary;
+	
+	public SalariedEmployee(String name, String desg, int salary) {
+		super(name, desg);
+		this.salary = salary; 
+	}
+	
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(salary);
+	}
+	
+	public int getSalary() {
+		return salary; 
+	}
+
+}
+
+OnsiteEmployee.java
+=====================
+class OnsiteEmployee extends SalariedEmployee {
+	protected int onsiteAllowance;
+
+	public OnsiteEmployee(String name, String desg, int salary, int onsiteAllowance) {
+		super(name, desg, salary);
+		this.onsiteAllowance = onsiteAllowance;
+	} 
+	
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(onsiteAllowance);
+	}
+	
+	@Override 
+	public int getSalary() {
+		return super.getSalary() + onsiteAllowance;
+	}
+}
+
+
+TestEmployee.java
+==================
+
+public class TestEmployee {
+
+	public static void main(String[] args) {
+		
+		 
+		print(new SalariedEmployee("Abc", "Programmer", 50000));
+		print(new Consultant("Joe", "DBA", 20, 2000));
+	}
+
+	public static void print(Employee e) {
+		e.print();  // Runtime Polymorphism
+		
+		
+		if (e.getSalary() > 20000)
+			System.out.printf("Pay %d by Cheque\n", e.getSalary());
+		else
+			System.out.printf("Pay %d by Cash\n", e.getSalary());
+	}
+
+}
