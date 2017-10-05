@@ -1,0 +1,50 @@
+package mt;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class PrimeNumbers {
+
+	public static void main(String[] args) {
+
+         int nums[] = {38383831,393939331,987744421,991,13,38381,888765,998766,9089347,887765};
+         
+         ExecutorService pool = Executors.newFixedThreadPool(5);
+         
+         for(int n : nums) {
+        	 pool.execute( new PrimeTask(n));
+         }
+         pool.shutdown();
+	}
+}
+
+class PrimeTask implements Runnable{
+	private int num;
+	
+	public PrimeTask(int num) {
+		this.num = num;
+	}
+	
+	@Override 
+	public void run() {
+		
+		for(int i = 2;  i <= num/2; i ++)
+		{
+			try {
+				Thread.sleep(100);
+			}
+			catch(Exception ex) {
+				
+			}
+			if ( num % i == 0 )
+			{
+				System.out.printf("\n%d  is not prime", num);
+				return; 
+			}
+		}
+		
+		System.out.printf("\n%d  is prime", num);
+		
+	}
+}
+
