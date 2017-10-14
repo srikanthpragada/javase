@@ -1,0 +1,50 @@
+package col;
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.TreeMap;
+import java.util.TreeSet;
+
+public class ListCustomers2 {
+
+	public static void main(String[] args) throws Exception {
+
+		Path path = Paths.get("f:\\classroom\\sep7\\customers.txt");
+		TreeMap<String,TreeSet<String>>  customers = new TreeMap<>();
+		
+		for(String line : Files.readAllLines(path))
+		{
+			String parts[] = line.split(",");
+			
+			if ( parts.length > 1) 
+			{ 
+				// check whether name is found
+				String name = parts[0];
+				String number = parts[1];
+				
+				if (customers.containsKey(name))  // found
+				{
+					 customers.get(name).add(number); // add new number to existing list 
+				}
+				else
+				{
+					 TreeSet<String> numbers = new TreeSet<>();
+					 numbers.add(number);
+					 customers.put(name, numbers);
+				}
+			}
+		}
+		
+		for(String name : customers.keySet()) {
+			System.out.println( name );
+			for(String number : customers.get(name))  
+			{
+				System.out.println("   " + number);
+			}
+		}
+		
+
+	}
+
+}
