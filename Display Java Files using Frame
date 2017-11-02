@@ -1,0 +1,145 @@
+
+JavaFilesFrame2.java
+=====================
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
+public class JavaFilesFrame2 extends JFrame {
+
+	JTextField tfFolder;
+	JList<String> lstFiles;
+	DefaultListModel<String> files;
+	JButton btnShow;
+	JButton btnClear;
+	
+	class MouseEventHandler extends MouseAdapter {
+		@Override
+		public void mouseClicked(MouseEvent evt) {
+		    if ( evt.getClickCount() == 2) // double click
+		    {
+		    	FileViewerFrame f = new FileViewerFrame(lstFiles.getSelectedValue());
+		    	f.setSize(500,300);
+		    	f.setVisible(true);
+		    }
+		}
+	}
+
+	public void showFiles() {
+		String folder = tfFolder.getText();
+
+		try {
+			Path startPath = Paths.get(folder);
+			Files.walk(startPath).filter(path -> path.toString().endsWith(".java"))
+					.forEach(path -> files.addElement(path.toString()));
+
+		} catch (Exception ex) {
+			// display error as a dialog
+			JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public JavaFilesFrame2() {
+		super("Show Java Files");
+		// create layout
+		JPanel tp = new JPanel();
+		tp.add(new JLabel("Folder :"));
+
+		tfFolder = new JTextField(20);
+		tfFolder.setText("f:\\classroom\\sep7");
+		tp.add(tfFolder);
+
+		btnShow = new JButton("Show");
+		
+		// btnShow.addActionListener(new ShowListener());
+		
+		btnShow.addActionListener(e -> showFiles());
+		
+		tp.add(btnShow);
+
+		btnClear = new JButton("Clear");
+		// body of actionPerformed
+		btnClear.addActionListener(e -> files.clear());
+		tp.add(btnClear);
+
+		Container c = getContentPane();
+
+		c.add(tp, BorderLayout.PAGE_START);
+
+		files = new DefaultListModel<String>();
+		lstFiles = new JList<String>(files);
+		lstFiles.addMouseListener(new MouseEventHandler());
+		
+
+		JScrollPane sp = new JScrollPane(lstFiles, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		c.add(sp);
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+
+	public static void main(String[] args) {
+
+		JavaFilesFrame2 f = new JavaFilesFrame2();
+		f.setSize(600, 300);
+		f.setVisible(true);
+	}
+
+}
+
+
+FileViewFrame.java
+==================
+import java.awt.Container;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+public class FileViewerFrame extends JFrame {
+
+	JTextArea taContents;
+
+	public FileViewerFrame(String filename) {
+		super(filename);
+		taContents = new JTextArea();
+		taContents.setEditable(false);
+
+		JScrollPane sp = new JScrollPane(taContents, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		Container c = getContentPane();
+		c.add(sp);
+
+		// open file and copy lines to text area
+		try {
+			Path path = Paths.get(filename);
+			Files.lines(path)
+			     .forEach(line -> taContents.append(line + "\n"));
+
+		} catch (Exception ex) {
+			taContents.setText("Error  :" + ex.getMessage());
+		}
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+	}
+
+}
+
