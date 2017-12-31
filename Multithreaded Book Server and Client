@@ -1,0 +1,132 @@
+javabooks.txt
+==============
+1
+Java Complete Reference
+2
+Thinking in Java
+3
+Core Java
+4
+Java Servlets and JSPs
+5
+JSF in Action
+
+
+BookServer.java
+===============
+
+//  Server to handle multiple clients
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.LinkedHashMap;
+
+class BooksRepository {
+	static LinkedHashMap<String, String> books = new LinkedHashMap<>();
+
+	static String getTitle(String id) {
+		return books.get(id);
+	}
+
+	static {
+		try {
+			BufferedReader br = Files.newBufferedReader(Paths.get("f:\\classroom\\javabooks.txt"));
+			while (true) {
+				String id = br.readLine();
+				if (id == null || id.trim().length() == 0)
+					break;
+				String title = br.readLine();
+				books.put(id, title);
+			}
+
+		} catch (Exception ex) {
+			System.out.println(ex);
+		}
+
+	}
+}
+
+public class BookServer {
+
+	public static void main(String args[]) throws Exception {
+
+		try (ServerSocket ssocket = new ServerSocket(3000, 10)) {
+			System.out.println("Book server started and ready!");
+			while (true) {
+				Socket s = ssocket.accept();
+				System.out.println("Accepted Client Request...");
+				HandleClient obj = new HandleClient(s);
+			}
+		}
+	}
+} // end of class
+
+class HandleClient extends Thread {
+	Socket s;
+	public HandleClient(Socket s) {
+		this.s = s;
+		start(); // start thread
+	}
+
+	public void run() {
+		try {
+			// read string from client
+			BufferedReader br = new BufferedReader(new InputStreamReader(s.getInputStream()));
+			PrintWriter pw = new PrintWriter(s.getOutputStream(), true);
+			String title;
+			while (true) {
+				String id = br.readLine();
+				if (id.equals("0"))
+					break;
+
+				// send title back to client
+				title = BooksRepository.getTitle(id);
+				pw.println(title == null ? "" : title);
+			} // end of while
+			System.out.println("Client Connection Closed");
+		} catch (Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+	} // end of run
+} // end of class
+
+
+BookClient.java
+===============
+
+
+import java.net.*;
+import java.io.*;
+import java.util.Scanner;
+
+public class BookClient {
+	public static void main(String args[]) throws Exception {
+		// connect to server socket
+		Socket s = new Socket("localhost", 3000);
+		// Access Keyboard
+		Scanner sc = new Scanner(System.in);
+		// take input and output stream of the socket
+		BufferedReader sin = new BufferedReader(new InputStreamReader(s.getInputStream()));
+		PrintWriter sout = new PrintWriter(s.getOutputStream(), true);
+		String title, bookno;
+
+		while (true) {
+			// take book no from user
+			System.out.println("Enter book number [0 to stop] : ");
+			bookno = sc.nextLine();
+			sout.println(bookno); // send value to server
+			if (bookno.equals("0"))
+				break;
+			title = sin.readLine();
+			if (title.length() != 0)
+				System.out.println("Book Title : " + title);
+			else
+				System.out.println("Sorry! Invalid Book Number.");
+		} // while
+	} // end of main
+} // end of class
+
