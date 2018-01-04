@@ -1,0 +1,91 @@
+ListPersons.java
+================
+// Displays person sorted by dob 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+
+public class ListPersons {
+
+	public static void main(String[] args) throws Exception {
+		Path file = Paths.get("f:\\classroom\\nov28\\persons.txt");
+
+		Files.lines(file)
+        .filter(ListPersons::validatePerson)
+        .map(ListPersons::getPerson) // Convert line to Person object
+				.sorted()
+        .forEach(p -> System.out.printf("%-10s  %s\n", p.getName(), p.getDob()));
+	}
+
+	public static Person getPerson(String line) {
+		String parts[] = line.split(",");
+		return new Person(parts[0], LocalDate.parse(parts[1]));
+	}
+
+	public static boolean validatePerson(String line) {
+		if (line.trim().length() == 0)
+			return false;
+
+		String parts[] = line.split(",");
+		if (parts.length < 2)
+			return false;
+		else {
+			// validate date
+			try {
+				LocalDate.parse(parts[1]); // Can we parse string to date??
+				return true;
+			} catch (Exception ex) {
+				return false;
+			}
+		}
+	}
+}
+
+Person.java
+===========
+import java.time.LocalDate;
+
+public class Person implements Comparable<Person>{
+	private String name;
+	private LocalDate dob;
+
+	public Person(String name, LocalDate dob) {
+		super();
+		this.name = name;
+		this.dob = dob;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public LocalDate getDob() {
+		return dob;
+	}
+
+	public void setDob(LocalDate dob) {
+		this.dob = dob;
+	}
+
+	@Override
+	public int compareTo(Person other) {
+		if (this.dob.equals(other.dob))
+			return  this.name.compareTo(other.name);
+		else
+			return this.dob.compareTo(other.dob);
+	}
+}
+
+
+persons.txt
+===========
+Abc,2000-02-10
+Xyz,1998-01-10
+Pqr,1997-20-10
+Def1999-11-20
+Bbc,2000-01-01
