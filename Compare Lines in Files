@@ -1,0 +1,40 @@
+import java.io.BufferedReader;
+import java.io.FileReader;
+
+public class CompareFiles {
+
+	public static void main(String[] args) throws Exception {
+
+       FileReader fr1 = new FileReader("e:\\classroom\\names1.txt");
+       FileReader fr2 = new FileReader("e:\\classroom\\names2.txt");
+       
+       BufferedReader br1 = new BufferedReader(fr1);
+       BufferedReader br2 = new BufferedReader(fr2);
+       int lineno = 1;
+       while(true)
+       {
+    	   String line1 = br1.readLine();
+    	   String line2 = br2.readLine();
+    	   
+    	   if (line1 == null && line2 == null)
+    	   {
+    		   System.out.println("Same");
+    		   break; 
+    	   }
+    	   
+    	   if (line1 == null || line2 == null || !line1.equals(line2))
+    	   {
+    		   System.out.printf("\nFiles differ at : %d\n", lineno);
+    		   break;
+    	   }
+    	   
+    	   lineno ++;
+       }
+       
+       fr1.close();
+       fr2.close();
+       
+       
+	}
+
+}
