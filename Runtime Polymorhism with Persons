@@ -1,0 +1,83 @@
+abstract class Person
+{
+	protected String name, email;
+	public Person(String name, String email) {
+		this.name = name;
+		this.email = email;
+	}
+	public void print() {
+		System.out.println(this.name);  // println(String)  --> Compile-time polymorphism 
+		System.out.println(this.email);
+	}
+	public final String getEmail() {
+		return email;
+	}
+	public abstract String getOccupation();
+	
+}
+class Student extends Person {
+	protected String course;
+	public Student(String name, String email, String course) {
+		super(name,email);
+		this.course = course; 
+	}
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(course);
+	}
+	@Override
+	public String getOccupation() {
+		return  name  +  " doing " + course; 
+	}
+}
+
+class Faculty extends Person {
+	protected String subjects;
+	public Faculty(String name, String email, String subjects) {
+		super(name,email);
+		this.subjects = subjects; 
+	}
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(subjects);
+	}
+	@Override
+	public String getOccupation() {
+		return  name  +  " teaching " + subjects; 
+	}
+}
+
+class ForeignStudent extends Student {
+	protected String country;
+	public ForeignStudent(String name, String email, String course, String country) {
+		super(name,email,course);
+		this.country = country; 
+	}
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(country);
+	}
+	@Override
+	public String getOccupation() {
+		return  name  + " from " + country + " doing " + course; 
+	}
+}
+ 
+public class TestPerson {
+
+	public static void main(String[] args) {
+		 Person p;
+		 
+		 p = new Faculty("Dr. Bean","bean@gmail.com","Python");             // upcasting
+		 p.print();    // Runtime polymorphism
+		 System.out.println(p.getOccupation()); // Runtime polymorphism
+		 
+		 p = new ForeignStudent("David","david@gmail.com","Java","Kenya");  // upcasting
+		 p.print();   // Runtime polymorphism
+		 System.out.println(p.getOccupation());
+	}
+
+}
