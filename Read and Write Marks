@@ -1,0 +1,55 @@
+
+WriteMarks.java
+================
+
+// Writes 10 marks into marks.dat
+
+package io;
+
+import java.io.RandomAccessFile;
+
+public class WriteMarks {
+
+	public static void main(String[] args) throws Exception {
+
+        RandomAccessFile raf = new RandomAccessFile("marks.dat","rw");
+        
+        for(int i = 1; i <= 10;  i++)
+        {
+        	raf.writeByte( (byte) Math.round(Math.random() * 100));
+        }
+        
+        raf.close();
+
+	}
+
+}
+
+
+ReadMarks.java
+===============
+// Takes rollno and reads marks for that roll number
+
+package io;
+
+import java.io.RandomAccessFile;
+import java.util.Scanner;
+
+public class ReadMarks {
+
+	public static void main(String[] args) throws Exception {
+
+        RandomAccessFile raf = new RandomAccessFile("marks.dat","r");
+        Scanner s = new Scanner(System.in);
+        
+        System.out.print("Enter rollno : ");
+        int rollno = s.nextInt();
+        
+        raf.seek(rollno);
+        System.out.println(  raf.readByte());
+        
+        raf.close();
+
+	}
+
+}
