@@ -1,0 +1,84 @@
+dates.txt
+=========
+10-10-2017
+10-11-2016
+10-30-2016
+1-1-2018
+5-3-2018
+
+
+// Load data from dates.txt and display dates in sorted order 
+
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.TreeSet;
+
+public class SortDates {
+
+	public static void main(String[] args) throws Exception {
+
+		Path path = Paths.get("e:\\classroom\\java\\june11\\dates.txt");
+		List<String> lines = Files.readAllLines(path);
+		TreeSet<LocalDate> dates = new TreeSet<>();
+		for (String line : lines) {
+			try {
+				LocalDate date = LocalDate.parse(line, DateTimeFormatter.ofPattern("d-M-yyyy"));
+				dates.add(date);
+			} catch (Exception ex) {
+			}
+		}
+		
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		for (LocalDate d : dates)
+			System.out.println(d.format(format));
+	}
+}
+
+Version 2
+===========
+package coll;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.TreeSet;
+
+public class SortDates2 {
+
+	public static void main(String[] args) throws Exception {
+
+		FileReader fr = new FileReader("e:\\classroom\\java\\june11\\dates.txt");
+		BufferedReader br = new BufferedReader(fr);
+		TreeSet<LocalDate> dates = new TreeSet<>();
+		while (true) {
+			String line = br.readLine();
+			if (line == null)
+				break;
+			try {
+				LocalDate date = LocalDate.parse(line, DateTimeFormatter.ofPattern("d-M-yyyy"));
+				dates.add(date);
+			} catch (Exception ex) {
+
+			}
+		}
+
+		DateTimeFormatter format = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		for (LocalDate d : dates)
+			System.out.println(d.format(format));
+
+	}
+
+}
+
+output
+=======
+10-11-2016
+10-10-2017
+01-01-2018
+05-03-2018
+
