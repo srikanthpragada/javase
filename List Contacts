@@ -1,0 +1,75 @@
+// Program to list mobile number and name in the order of mobile number 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class SortMobile {
+
+	public static void main(String[] args) throws IOException {
+		Path path = Paths.get("e:\\classroom\\java\\sep28\\mobile.txt");
+		BufferedReader br = Files.newBufferedReader(path);
+		TreeMap<String,String> mobiles = new TreeMap<>();
+		while(true)
+		{
+		   String line = br.readLine();
+		   if (line == null)
+			   break;
+		   
+		   String parts[] = line.split(",");
+		   if (parts.length >= 2)
+		   {
+			   if(! Pattern.matches("^\\d{10}$",parts[0]))
+				   continue; // ignore current line and go to next line
+			   
+			   if (! Pattern.matches("[a-zA-Z. ]+", parts[1]))
+				   continue; 
+			   
+			   // Replace multiple spaces with one space
+			   Pattern p = Pattern.compile(" +");
+			   Matcher matcher = p.matcher(parts[1]);
+			   String name = matcher.replaceAll(" ");
+		       mobiles.put(parts[0], name);
+		   }
+		}
+		
+		br.close();
+		
+		for(String number : mobiles.keySet())
+			System.out.printf("%-15s %s\n", number, mobiles.get(number));
+
+	}
+}
+
+
+mobile.txt (input file)
+=======================
+8338338383,Steve
+5569393933,Tom
+3838383333,Anders 2
+3939393933,Mr.   Jhon      Resig
+3938943433,George
+
+3343443433,Tody
+abcabcabcd,James
+3838383838,Micheal
+9999993a39,Stephen
+3838383333,Mike
+9090909090,Anders
+38383833,Larry
+
+
+Generated output
+================
+3343443433      Tody
+3838383333      Mike
+3838383838      Micheal
+3938943433      George
+3939393933      Mr. Jhon Resig
+5569393933      Tom
+8338338383      Steve
+9090909090      Anders
