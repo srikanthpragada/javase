@@ -1,0 +1,68 @@
+abstract class Product {
+	protected String name;
+	protected double price;
+	
+	public Product(String name, double price) {
+		this.name = name;
+		this.price = price;
+	}
+	
+	public void print() {
+		System.out.println(this.name);
+		System.out.println(this.price);
+	}
+	
+	public abstract double getPrice();
+}
+
+class DProduct extends Product {
+	protected double disrate;
+	
+	public DProduct(String name, double price, double disrate) {
+		super(name,price);
+		this.disrate = disrate;
+	}
+	@Override 
+	public void print() {
+		super.print();
+		System.out.println(this.disrate);
+	}
+	@Override
+	public double getPrice() {
+		return  this.price - (this.price * this.disrate / 100);
+	}
+}
+
+class TProduct extends Product {
+	protected double taxrate;
+	
+	public TProduct(String name, double price, double taxrate) {
+		super(name,price);
+		this.taxrate = taxrate;
+	}
+	@Override
+	public void print() {
+		super.print();
+		System.out.println(this.taxrate);
+	}
+	
+	@Override
+	public double getPrice() {
+		return  this.price + (this.price * this.taxrate / 100);
+	}
+}
+
+
+public class TestProduct {
+
+	public static void main(String[] args) {
+        Product p = new DProduct("Product 1",50000,30); 
+        p.print(); // Runtime Polymorphism
+        System.out.println( p.getPrice());
+        p = new TProduct("Product 2",10000,12);
+        p.print(); // Runtime Polymorphism
+        System.out.println( p.getPrice());
+
+	}
+
+}
