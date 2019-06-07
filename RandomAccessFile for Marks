@@ -1,0 +1,96 @@
+WriteMarks.java
+=================
+
+import java.io.RandomAccessFile;
+
+public class WriteMarks {
+
+	public static void main(String[] args) throws Exception  {
+        RandomAccessFile raf = new RandomAccessFile
+        		("e:\\classroom\\java\\may13\\marks.dat","rw");
+        
+        for(int i = 1; i <= 10; i ++)
+        {
+        	int marks = (int) Math.round(Math.random() * 100);
+        	raf.writeInt(marks);
+        }
+        raf.close(); 
+	}
+
+}
+
+SortMarks.java
+===============
+import java.io.RandomAccessFile;
+import java.util.Arrays;
+
+public class SortMarks {
+
+	public static void main(String[] args) throws Exception  {
+        RandomAccessFile raf = new RandomAccessFile
+        		("e:\\classroom\\java\\may13\\marks.dat","r");
+        
+        int marks[] = new int[10];
+        
+        for(int i = 0; i < 10; i ++)
+        {
+        	marks[i] = raf.readInt();
+        }
+        raf.close();
+        
+        Arrays.sort(marks);
+        
+        for(int m : marks)
+        	System.out.println(m);
+	}
+
+}
+
+
+ChangeMarks.java
+================
+import java.io.RandomAccessFile;
+import java.util.Scanner;
+
+public class ChangeMarks {
+
+	public static void printMarks(RandomAccessFile raf, int size) throws Exception {
+		raf.seek(0);
+		System.out.println("\nMarks List\n");
+		for(int i = 0; i < size; i ++)
+        {
+        	System.out.printf("%5d", raf.readInt());
+        }
+	}
+	
+	public static void main(String[] args) throws Exception  {
+        RandomAccessFile raf = new RandomAccessFile
+        		("e:\\classroom\\java\\may13\\marks.dat","rw");
+
+        printMarks(raf,10);
+        
+        Scanner s = new Scanner(System.in);
+        System.out.print("\nEnter rollno : ");
+        int rollno = s.nextInt();
+        
+        int pos = (rollno - 1) * 4;
+        raf.seek(pos);
+        
+        System.out.printf("\nCurrent Marks   : %d", raf.readInt());
+        System.out.printf("\nEnter new marks : ");
+        int marks = s.nextInt();
+        
+        raf.seek(pos);        // go back to starting position of marks 
+        raf.writeInt(marks);  // overwrite existing marks with new marks 
+        
+        printMarks(raf, 10);
+        
+        raf.close();
+        
+	}
+
+}
+
+
+
+
