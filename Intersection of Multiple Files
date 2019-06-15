@@ -1,0 +1,40 @@
+// Intersection of multiple files 
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.LinkedHashSet;
+
+public class Intersect {
+
+	public static void main(String[] args) throws Exception {
+
+		String files[] = { "e:\\classroom\\java\\names1.txt", "e:\\classroom\\java\\names2.txt",
+				"e:\\classroom\\java\\names3.txt" };
+
+		var names = new LinkedHashSet<String>();
+		var common = new LinkedHashSet<String>();
+
+		Files.lines(Paths.get(files[0])).forEach(name -> names.add(name));
+
+		for (int i = 1; i < files.length; i++) {
+			Files.lines(Paths.get(files[i])).forEach(name -> {
+				if (names.contains(name))
+					common.add(name);
+			});
+
+			// make common the source for next round and empty common
+			names.clear();
+			
+			// copy common to names
+			for (String name : common)
+				names.add(name);
+
+			// empty common
+			common.clear();
+		}
+
+		names.forEach(System.out::println);
+
+	}
+
+}
