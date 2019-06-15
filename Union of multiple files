@@ -1,0 +1,26 @@
+// Union of multiple files using Collections and Streams 
+
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.LinkedHashSet;
+
+public class Union {
+
+	public static void main(String[] args) {
+
+		String files[] = { "e:\\classroom\\java\\names1.txt", "e:\\classroom\\java\\names2.txt",
+				"e:\\classroom\\java\\names3.txt" };
+
+		var names = new LinkedHashSet<String>();
+
+		for (String filename : files) {
+			try {
+				Files.lines(Paths.get(filename)).forEach(name -> names.add(name));
+			} catch (Exception ex) {
+
+			}
+		}
+		
+		names.forEach(System.out::println);
+	}
+}
