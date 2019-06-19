@@ -1,0 +1,138 @@
+ShowJavaFiles.java
+===================
+package book;
+
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
+public class ShowJavaFiles extends JFrame {
+
+	JTextField tfDir;
+	JButton btnList, btnExit;
+	JList<String> lstFiles;
+	DefaultListModel<String> files;
+
+	public ShowJavaFiles() {
+		super("Java Files");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		tfDir = new JTextField(20);
+		tfDir.setText("e:\\classroom\\java\\may13");
+		btnList = new JButton("List");
+		btnExit = new JButton("Exit");
+
+		JPanel tp = new JPanel();
+		tp.add(new JLabel("Directory :"));
+		tp.add(tfDir);
+		tp.add(btnList);
+		tp.add(btnExit);
+
+		// Listbox
+		files = new DefaultListModel<String>();
+		lstFiles = new JList<String>(files);
+		JScrollPane jsp = new JScrollPane(lstFiles, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		Container c = getContentPane();
+		c.add(tp, BorderLayout.NORTH);
+		c.add(jsp, BorderLayout.CENTER);
+
+		setSize(500, 500);
+		setVisible(true);
+
+		// Event handling
+		btnList.addActionListener(e -> showFiles());
+		btnExit.addActionListener(e -> System.exit(0));
+
+		// Handle double click event for ListBox
+		lstFiles.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2)
+					showFileContent();
+			}
+		});
+	}
+
+	public void showFileContent() {
+		try {
+			ShowJavaFileContent f = new ShowJavaFileContent(lstFiles.getSelectedValue());
+			f.setSize(700, 400);
+			f.setVisible(true);
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+
+	public void showFiles() {
+		try {
+			Path dir = Paths.get(tfDir.getText());
+			files.clear(); // Clear items from model
+
+			Files.walk(dir).forEach(p -> {
+				if (p.toString().endsWith(".java"))
+					files.addElement(p.toString());
+			});
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		}
+
+	}
+
+	public static void main(String[] args) {
+		new ShowJavaFiles();
+
+	}
+
+}
+
+
+ShowJavaFileContent.java
+=========================
+package book;
+
+import java.awt.Container;
+import java.awt.Font;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
+public class ShowJavaFileContent extends JFrame {
+	private JTextArea taContents;
+
+	public ShowJavaFileContent(String filename) throws Exception {
+		super(filename);
+		taContents = new JTextArea();
+		taContents.setEditable(false);
+		taContents.setFont(new Font("consolas",Font.PLAIN, 11));
+
+		JScrollPane sp = new JScrollPane(taContents, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		Container c = getContentPane();
+		c.add(sp); // center
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		Path path = Paths.get(filename);
+		taContents.setText(Files.readString(path));
+		taContents.setCaretPosition(0);
+	}
+}
