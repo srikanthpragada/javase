@@ -1,0 +1,99 @@
+abstract class Employee 
+{
+	protected int id;
+	protected String name;
+	public Employee(int id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+	
+	public void print() {
+		System.out.println(this.id);
+		System.out.println(this.name);
+	}
+	
+	abstract public int getSalary();
+}
+
+class Programmer extends Employee  {
+	protected int salary;
+
+	public Programmer(int id, String name, int salary) {
+		super(id, name);
+		this.salary = salary;
+	}
+	
+	@Override
+	public void print() {
+		super.print();
+		System.out.println(this.salary);
+	}
+	
+	@Override 
+	public int getSalary() {
+		return this.salary;
+	}
+}
+
+class Admin extends Employee  {
+	protected int salary, allow;
+	
+	public Admin(int id, String name, int salary, int allow) {
+		super(id, name);
+		this.salary = salary;
+		this.allow = allow;
+	}
+
+	@Override
+	public void print() {
+		super.print();
+		System.out.println(this.salary);
+		System.out.println(this.allow);
+	}
+	
+	public int getSalary() {
+		return this.salary + this.allow;
+	}
+}
+
+class Consultant extends Employee  {
+	protected int hours, rate;
+	 
+	public Consultant(int id, String name, int hours, int rate) {
+		super(id, name);
+		this.hours = hours;
+		this.rate = rate;
+	}
+
+	@Override
+	public void print() {
+		super.print();
+		System.out.println(this.hours);
+		System.out.println(this.rate);
+	}
+	
+	public int getSalary() {
+		return this.hours * this.rate;
+	}
+}
+
+
+
+
+
+public class TestEmployee {
+
+	public static void main(String[] args) {
+		
+       Employee e = new Consultant(1,"Steve",10,1000);
+       e.print(); 
+       System.out.println(e.getSalary());
+       
+       e = new Admin(2,"Scott",200000,50000);
+       e.print();
+       System.out.println(e.getSalary());
+
+	}
+
+}
