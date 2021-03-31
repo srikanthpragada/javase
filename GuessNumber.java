@@ -23,16 +23,16 @@ public class GuessNumber {
 			// Provide assistance when it is not last attempt 
 			if (attempts < 3) {
 				if (gn > number)
-					System.out.println("Your number is smaller!");
-				else
 					System.out.println("Your number is bigger!");
+				else
+					System.out.println("Your number is smaller!");
 			}
 
 			attempts++;
 		}
 
 		
-		System.out.println("Sorry! Next time better luck!");
+		System.out.println("Sorry! Better luck next time!");
 	}
 
 }
